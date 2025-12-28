@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Happy Birthday Rayan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: black;
+  overflow: hidden;
+  height: 100vh;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+.center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#birthday-text {
+  position: absolute;
+  top: 4%;
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+#countdown {
+  font-size: 8rem;
+  font-weight: 500;
+  text-shadow: 0 0 40px currentColor;
+  transition: opacity 1.5s ease;
+}
+
+.stem {
+  position: absolute;
+  bottom: 0;
+  width: 10px;
+  height: 0;
+  background: linear-gradient(to top, #1f8f4a, #5cff9d);
+  box-shadow: 0 0 20px rgba(100,255,180,0.6);
+  transition: height 3s ease;
+}
+
+.leaf {
+  position: absolute;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, #6bff95, #1f8f4a);
+  border-radius: 50% 50% 50% 0;
+  opacity: 0;
+  transition: all 2s ease;
+}
+
+.leaf.left {
+  left: -40px;
+  top: 60%;
+  transform: rotate(-30deg);
+}
+
+.leaf.right {
+  right: -40px;
+  top: 40%;
+  transform: rotate(30deg);
+}
+
+.flower {
+  position: absolute;
+  bottom: 260px;
+  width: 220px;
+  height: 220px;
+  opacity: 0;
+  animation: sway 8s ease-in-out infinite;
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.petal {
+  position: absolute;
+  width: 80px;
+  height: 120px;
+  background: linear-gradient(135deg, #ff7eb3, #ffd86f, #7afcff);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 25px rgba(255,200,150,0.9));
+  transform-origin: bottom center;
+  transform: scale(0);
+  transition: transform 2s ease;
+  animation: pulse 5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(255,200,150,0.6)); }
+  50% { filter: drop-shadow(0 0 35px rgba(255,220,180,1)); }
+}
+
+.petal:nth-child(1) { transform: rotate(0deg) scale(0); }
+.petal:nth-child(2) { transform: rotate(60deg) scale(0); }
+.petal:nth-child(3) { transform: rotate(120deg) scale(0); }
+.petal:nth-child(4) { transform: rotate(180deg) scale(0); }
+.petal:nth-child(5) { transform: rotate(240deg) scale(0); }
+.petal:nth-child(6) { transform: rotate(300deg) scale(0); }
+
+.center-dot {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: #ffd86f;
+  border-radius: 50%;
+  top: 85px;
+  left: 85px;
+  box-shadow: 0 0 30px #ffd86f;
+  transform: scale(0);
+  transition: transform 2s ease;
+}
+
+.balloon {
+  position: absolute;
+  bottom: -150px;
+  width: 40px;
+  height: 55px;
+  border-radius: 50%;
+  animation: floatUp 10s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-120vh); }
+}
+
+.glow {
+  animation: glowBg 6s ease-in-out infinite;
+}
+
+@keyframes glowBg {
+  0% { background-color: black; }
+  50% { background-color: #0b0b0b; }
+  100% { background-color: black; }
+}
+</style>
+</head>
+
+<body>
+<div class="center">
+  <div id="birthday-text">Happy Birthday Rayan 🎉</div>
+  <div id="countdown"></div>
+
+  <div class="stem" id="stem">
+    <div class="leaf left" id="leafL"></div>
+    <div class="leaf right" id="leafR"></div>
+  </div>
+
+  <div class="flower" id="flower">
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="center-dot"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+const TARGET_DATE = new Date(Date.now() + 30 * 1000); // TEST: 30 seconds from now
+const countdownEl = document.getElementById("countdown");
+const birthdayText = document.getElementById("birthday-text");
+
+const stem = document.getElementById("stem");
+const leafL = document.getElementById("leafL");
+const leafR = document.getElementById("leafR");
+const flower = document.getElementById("flower");
+
+const petals = document.querySelectorAll(".petal");
+const centerDot = document.querySelector(".center-dot");
+
+const colors = ["#ff7eb3", "#ffd86f", "#7afcff", "#ff9a8b", "#cdb4ff"];
+let colorIndex = 0;
+let revealed = false;
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = TARGET_DATE - now;
+
+  if (diff <= 0 && !revealed) {
+    reveal();
+    revealed = true;
+    return;
+  }
+
+  const seconds = Math.floor(diff / 1000);
+  countdownEl.textContent = seconds;
+  countdownEl.style.color = colors[colorIndex % colors.length];
+  colorIndex++;
+}
+
+function reveal() {
+  clearInterval(timer);
+  countdownEl.style.opacity = 0;
+
+  setTimeout(() => {
+    document.body.classList.add("glow");
+    birthdayText.style.opacity = 1;
+
+    stem.style.height = "260px";
+
+    leafL.style.width = "70px";
+    leafL.style.height = "40px";
+    leafL.style.opacity = 1;
+
+    leafR.style.width = "70px";
+    leafR.style.height = "40px";
+    leafR.style.opacity = 1;
+
+    flower.style.opacity = 1;
+
+    petals.forEach((p, i) => {
+      setTimeout(() => {
+        p.style.transform = p.style.transform.replace("scale(0)", "scale(1)");
+      }, i * 200);
+    });
+
+    centerDot.style.transform = "scale(1)";
+
+    confetti({
+      particleCount: 300,
+      spread: 160,
+      startVelocity: 45,
+      origin: { y: 0.6 }
+    });
+
+    spawnBalloons();
+  }, 1200);
+}
+
+function spawnBalloons() {
+  for (let i = 0; i < 12; i++) {
+    const balloon = document.createElement("div");
+    balloon.className = "balloon";
+    balloon.style.left = Math.random() * 100 + "vw";
+    balloon.style.background = colors[i % colors.length];
+    balloon.style.animationDuration = 8 + Math.random() * 6 + "s";
+    document.body.appendChild(balloon);
+  }
+}
+
+const timer = setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+</body>
+</html>
