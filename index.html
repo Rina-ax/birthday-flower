@@ -1,271 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Happy Birthday Rayan</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-
+<title>Happy Birthday!</title>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background: black;
-  overflow: hidden;
-  height: 100vh;
-  color: white;
-  font-family: 'Poppins', sans-serif;
-}
-
-.center {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#birthday-text {
-  position: absolute;
-  top: 4%;
-  font-family: 'Playfair Display', serif;
-  font-size: 3.5rem;
-  opacity: 0;
-  transition: opacity 2s ease;
-}
-
-#countdown {
-  font-size: 8rem;
-  font-weight: 500;
-  text-shadow: 0 0 40px currentColor;
-  transition: opacity 1.5s ease;
-}
-
-.stem {
-  position: absolute;
-  bottom: 0;
-  width: 10px;
-  height: 0;
-  background: linear-gradient(to top, #1f8f4a, #5cff9d);
-  box-shadow: 0 0 20px rgba(100,255,180,0.6);
-  transition: height 3s ease;
-}
-
-.leaf {
-  position: absolute;
-  width: 0;
-  height: 0;
-  background: radial-gradient(circle, #6bff95, #1f8f4a);
-  border-radius: 50% 50% 50% 0;
-  opacity: 0;
-  transition: all 2s ease;
-}
-
-.leaf.left {
-  left: -40px;
-  top: 60%;
-  transform: rotate(-30deg);
-}
-
-.leaf.right {
-  right: -40px;
-  top: 40%;
-  transform: rotate(30deg);
-}
-
-.flower {
-  position: absolute;
-  bottom: 260px;
-  width: 220px;
-  height: 220px;
-  opacity: 0;
-  animation: sway 8s ease-in-out infinite;
-}
-
-@keyframes sway {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-}
-
-.petal {
-  position: absolute;
-  width: 80px;
-  height: 120px;
-  background: linear-gradient(135deg, #ff7eb3, #ffd86f, #7afcff);
-  border-radius: 50%;
-  filter: drop-shadow(0 0 25px rgba(255,200,150,0.9));
-  transform-origin: bottom center;
-  transform: scale(0);
-  transition: transform 2s ease;
-  animation: pulse 5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { filter: drop-shadow(0 0 20px rgba(255,200,150,0.6)); }
-  50% { filter: drop-shadow(0 0 35px rgba(255,220,180,1)); }
-}
-
-.petal:nth-child(1) { transform: rotate(0deg) scale(0); }
-.petal:nth-child(2) { transform: rotate(60deg) scale(0); }
-.petal:nth-child(3) { transform: rotate(120deg) scale(0); }
-.petal:nth-child(4) { transform: rotate(180deg) scale(0); }
-.petal:nth-child(5) { transform: rotate(240deg) scale(0); }
-.petal:nth-child(6) { transform: rotate(300deg) scale(0); }
-
-.center-dot {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background: #ffd86f;
-  border-radius: 50%;
-  top: 85px;
-  left: 85px;
-  box-shadow: 0 0 30px #ffd86f;
-  transform: scale(0);
-  transition: transform 2s ease;
-}
-
-.balloon {
-  position: absolute;
-  bottom: -150px;
-  width: 40px;
-  height: 55px;
-  border-radius: 50%;
-  animation: floatUp 10s linear infinite;
-  opacity: 0.7;
-}
-
-@keyframes floatUp {
-  from { transform: translateY(0); }
-  to { transform: translateY(-120vh); }
-}
-
-.glow {
-  animation: glowBg 6s ease-in-out infinite;
-}
-
-@keyframes glowBg {
-  0% { background-color: black; }
-  50% { background-color: #0b0b0b; }
-  100% { background-color: black; }
-}
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&display=swap');
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: black;
+    }
+    #countdown {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 5em;
+        font-weight: bold;
+        text-align: center;
+        color: white;
+    }
+    #message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Parisienne', cursive;
+        font-size: 5em;
+        color: white;
+        text-align: center;
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffb3ff, 0 0 40px #ff99ff, 0 0 50px #ff66ff, 0 0 60px #ff33ff;
+        display: none;
+    }
+    canvas {
+        display: block;
+    }
 </style>
 </head>
-
 <body>
-<div class="center">
-  <div id="birthday-text">Happy Birthday Rayan 🎉</div>
-  <div id="countdown"></div>
-
-  <div class="stem" id="stem">
-    <div class="leaf left" id="leafL"></div>
-    <div class="leaf right" id="leafR"></div>
-  </div>
-
-  <div class="flower" id="flower">
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="center-dot"></div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
+<div id="countdown"></div>
+<div id="message">Happy birthdayy!</div>
+<canvas id="canvas"></canvas>
 <script>
-const TARGET_DATE = new Date(Date.now() + 30 * 1000); // TEST: 30 seconds from now
-const countdownEl = document.getElementById("countdown");
-const birthdayText = document.getElementById("birthday-text");
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-const stem = document.getElementById("stem");
-const leafL = document.getElementById("leafL");
-const leafR = document.getElementById("leafR");
-const flower = document.getElementById("flower");
-
-const petals = document.querySelectorAll(".petal");
-const centerDot = document.querySelector(".center-dot");
-
-const colors = ["#ff7eb3", "#ffd86f", "#7afcff", "#ff9a8b", "#cdb4ff"];
-let colorIndex = 0;
-let revealed = false;
-
-function updateCountdown() {
-  const now = new Date();
-  const diff = TARGET_DATE - now;
-
-  if (diff <= 0 && !revealed) {
-    reveal();
-    revealed = true;
-    return;
-  }
-
-  const seconds = Math.floor(diff / 1000);
-  countdownEl.textContent = seconds;
-  countdownEl.style.color = colors[colorIndex % colors.length];
-  colorIndex++;
+class ConfettiParticle {
+    constructor(x, y, color){
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 8;
+        this.vy = Math.random() * 5 + 2;
+        this.color = color;
+        this.size = Math.random() * 8 + 2;
+        this.life = 100;
+    }
+    update(){
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.1;
+        this.life--;
+    }
+    draw(ctx){
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+    }
 }
 
-function reveal() {
-  clearInterval(timer);
-  countdownEl.style.opacity = 0;
+let confettiParticles = [];
+function spawnConfetti(){
+    for(let i=0;i<150;i++){
+        let x = Math.random() < 0.5 ? 0 : canvas.width;
+        let y = Math.random() < 0.5 ? 0 : canvas.height;
+        let colors = ['#ff69b4','#00ffff','#ff00ff','#ffff00','#00ff00','#ff4500'];
+        confettiParticles.push(new ConfettiParticle(x,y, colors[Math.floor(Math.random()*colors.length)]));
+    }
+}
 
-  setTimeout(() => {
-    document.body.classList.add("glow");
-    birthdayText.style.opacity = 1;
+let flower = {
+    petals: 8,
+    petalLength: 180,
+    petalWidth: 100,
+    bloom: 0,
+    sway: 0
+};
+let stem = {
+    height: 0,
+    maxHeight: 300
+};
 
-    stem.style.height = "260px";
+function drawFlower(){
+    const centerX = canvas.width/2;
+    const centerY = canvas.height/2 + 100;
 
-    leafL.style.width = "70px";
-    leafL.style.height = "40px";
-    leafL.style.opacity = 1;
+    ctx.fillStyle = '#004d00';
+    ctx.fillRect(centerX-6, centerY-stem.height, 12, stem.height);
 
-    leafR.style.width = "70px";
-    leafR.style.height = "40px";
-    leafR.style.opacity = 1;
+    // Hibiscus-style leaves
+    ctx.fillStyle = '#004d00';
+    for(let i=1;i<=3;i++){
+        ctx.beginPath();
+        ctx.ellipse(centerX-30*i, centerY-stem.height*(i/4), 50, 20, Math.PI/6, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(centerX+30*i, centerY-stem.height*(i/4), 50, 20, -Math.PI/6, 0, 2*Math.PI);
+        ctx.fill();
+    }
 
-    flower.style.opacity = 1;
+    // Flower petals
+    for(let i=0;i<flower.petals;i++){
+        let angle = (i / flower.petals) * Math.PI * 2 + Math.sin(flower.sway)*0.2;
+        let length = flower.petalLength * flower.bloom;
+        let width = flower.petalWidth;
+        ctx.save();
+        ctx.translate(centerX, centerY - stem.height);
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.ellipse(0, -length/2, width, length, 0, 0, Math.PI*2);
+        ctx.fillStyle = `hsl(280, 80%, 60%)`;
+        ctx.shadowColor = '#fff';
+        ctx.shadowBlur = 20;
+        ctx.fill();
+        ctx.restore();
+    }
+}
 
-    petals.forEach((p, i) => {
-      setTimeout(() => {
-        p.style.transform = p.style.transform.replace("scale(0)", "scale(1)");
-      }, i * 200);
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    confettiParticles.forEach((p,i)=>{
+        p.update();
+        p.draw(ctx);
+        if(p.life<=0) confettiParticles.splice(i,1);
     });
 
-    centerDot.style.transform = "scale(1)";
+    if(stem.height < stem.maxHeight) stem.height += 2;
+    else if(flower.bloom < 1) flower.bloom += 0.008;
 
-    confetti({
-      particleCount: 300,
-      spread: 160,
-      startVelocity: 45,
-      origin: { y: 0.6 }
-    });
+    flower.sway += 0.02;
 
-    spawnBalloons();
-  }, 1200);
+    drawFlower();
+    requestAnimationFrame(animate);
 }
 
-function spawnBalloons() {
-  for (let i = 0; i < 12; i++) {
-    const balloon = document.createElement("div");
-    balloon.className = "balloon";
-    balloon.style.left = Math.random() * 100 + "vw";
-    balloon.style.background = colors[i % colors.length];
-    balloon.style.animationDuration = 8 + Math.random() * 6 + "s";
-    document.body.appendChild(balloon);
-  }
-}
+let countdownEl = document.getElementById('countdown');
+let messageEl = document.getElementById('message');
+let countdown = 10;
+countdownEl.style.color = `hsl(${Math.random()*360},100%,50%)`;
+countdownEl.textContent = countdown;
 
-const timer = setInterval(updateCountdown, 1000);
-updateCountdown();
+let countdownInterval = setInterval(()=>{
+    countdown--;
+    countdownEl.style.color = `hsl(${Math.random()*360},100%,50%)`;
+    countdownEl.textContent = countdown;
+    if(countdown <= 0){
+        clearInterval(countdownInterval);
+        countdownEl.style.display = 'none';
+        spawnConfetti();
+        messageEl.style.display = 'block';
+        animate();
+    }
+},1000);
 </script>
 </body>
 </html>
